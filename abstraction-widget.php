@@ -35,7 +35,7 @@ class Abstraction_Widget extends WP_Widget {
 		$widget_ops = array(
 			'classname' => 'abstraction_widget',
 			'description' => esc_html__( 'A Widget for testing Abstraction ideas' ) );
-		parent::WP_Wdget( 'abstraction-widget',$this->widget_name, $widget_ops );
+		parent::__construct( 'abstraction-widget','Abstraction Widget', $widget_ops );
 	}
 
 
