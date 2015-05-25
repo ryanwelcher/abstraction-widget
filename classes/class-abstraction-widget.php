@@ -12,7 +12,14 @@ class Abstraction_Widget extends WP_Widget {
 	 * @access public
 	 * @var array
 	 */
-	public $form_elements = array();
+	public $form_elements = array(
+		array(
+			'type'        => 'text', // text | textarea | checkbox
+			'name'        => 'title',
+			'label'       => 'Title',
+			'label_after' => false,
+		),
+	);
 
 
 	/**
@@ -172,23 +179,32 @@ class Abstraction_Widget extends WP_Widget {
 	 * @return string Default return is 'noform'.
 	 */
 	public function form($instance) {
-		$this->_generate_form_elements( $instance );
+		echo $this->_generate_form_elements( $instance );
 	}
 
 
 	/**
 	 * Helper method to generate the markup for the widget form
-	 * @param $instance
+	 *
+	 * @param array $instance
+	 * @param string $tag
+	 * @return string
 	 */
 	protected function _generate_form_elements( $instance, $tag = 'p' ) {
+		$markup = '';
 
 		foreach ( $this->form_elements as $element ) {
+
+			$label = $this->generate_label( $element );
+			$field = $this->generate_form_field( $element, $instance );
+
 			$el = '<'.$tag.'>';
-			$el .= $this->generate_label( $element );
-			$el .= $this->generate_form_field( $element, $instance );
+			$el .= ( isset( $element['label_after'] ) && $element['label_after'] ) ? $field . $label : $label . $field;
 			$el .= '</'.$tag.'>';
-			echo $el;
+			$markup .= $el;
 		}
+
+		return $markup;
 	}
 
 	/**
@@ -261,6 +277,21 @@ class Abstraction_Widget extends WP_Widget {
 
 				<?php
 				break;
+			case 'select':
+				if ( isset( $element['options'] ) && is_array( $element['options'] ) ) :
+					$saved_value = isset( $instance[ $element['name'] ] ) ? $instance[ $element['name'] ] : '';
+					?>
+				<select
+					class="widefat <?php echo esc_attr( $classes );?>"
+					name="<?php echo esc_attr( $this->get_field_name( $element['name'] ) ); ?>"
+					id="<?php echo esc_attr( $this->get_field_id( $element['name'] ) ); ?>">
+						<?php foreach ( $element['options'] as $value => $name ) : ?>
+							<option value="<?php echo esc_attr( $value );?>"<?php selected( $saved_value , $value ); ?>><?php echo esc_html( $name ) ?></option>
+						<?php endforeach; ?>
+				</select>
+				<?php endif;
+				break;
+
 		}
 
 		return ob_get_clean();
