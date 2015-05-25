@@ -1,6 +1,7 @@
 <?php
 /**
  * Plugin Name: Abstraction Widget
+ * Description: This plugin removes the default widgets and replaces them with version built from a new class with more abstraction.
  */
 
 
