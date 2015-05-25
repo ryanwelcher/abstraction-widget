@@ -22,6 +22,7 @@ class My_Widget extends Abstraction_Widget {
 			'type' => 'checkbox',
 			'label' => 'Remember this status?',
 			'name'  => 'remember',
+			'label_after' => true,
 		),
 		array(
 			'type' => 'textarea',
