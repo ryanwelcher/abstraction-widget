@@ -96,9 +96,25 @@ class Abstraction_Widget extends WP_Widget {
 	 * @param array $instance The settings for the particular instance of the widget.
 	 */
 	public function widget( $args, $instance ) {
+		//verify that we should be showing the widget
+		if ( ! $this->verify_settings( $instance ) ) {
+			return;
+		}
+
 		$this->before_widget( $args, $instance );
 		$this->widget_markup( $args, $instance );
 		$this->after_widget( $args, $instance );
+	}
+
+	/**
+	 * Verify settings
+	 *
+	 * Used to determine whether we should render the widget or not. Props @jdgrimes {link} https://core.trac.wordpress.org/ticket/32470#comment:15
+	 * @param array $instance
+	 * @return bool
+	 */
+	public function verify_settings( $instance ) {
+		return true;
 	}
 
 
